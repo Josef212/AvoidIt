@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -9,16 +8,25 @@ public class Player : MonoBehaviour
     
     private float movement;
 
+    private GameManager gm;
+
     // ====================================================================
 
 	void Start ()
     {
-
+        gm = GameManager.Instance;
 	}
 
 	void Update ()
     {
         movement = Input.GetAxisRaw("Horizontal");
+
+        if (Input.touchCount > 0)
+        {
+            Touch t = Input.GetTouch(0);
+            // TODO: Calc the movement for mobile with touches
+        }
+        
 	}
 
     void FixedUpdate()
@@ -31,8 +39,7 @@ public class Player : MonoBehaviour
         Debug.Log(collision.tag);
         if(collision.tag == "Obstacle")
         {
-            // TODO: Game over
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            gm.GameLost();
         }
     }
 }

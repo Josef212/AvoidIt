@@ -5,7 +5,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public float spawnRate = 0.5f;
-    public GameObject obstaclePrefab;
+    public GameObject[] obstaclePrefabs;
 
     private float nextSpawn;
 
@@ -19,7 +19,8 @@ public class Spawner : MonoBehaviour
     {
 		if(Time.time >= nextSpawn)
         {
-            Instantiate(obstaclePrefab, Vector3.zero, Quaternion.identity);
+            GameObject obj = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
+            Instantiate(obj, Vector3.zero, Quaternion.identity);
             nextSpawn = Time.time + (1f / spawnRate);
         }
 	}
