@@ -19,10 +19,15 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI pointsText;
     public TextMeshProUGUI bestPointsText;
 
+    public GameObject player;
+    public GameObject lostUI;
+
     private Score score;
+    private bool gameLost = false;
     private static GameManager instance;
 
     public static GameManager Instance { get { return instance; } }
+    public bool GameLost { get { return gameLost; } }
 
     // ====================================================
 
@@ -34,6 +39,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         score = new Score();
+        gameLost = false;
     }
 
     void Start ()
@@ -63,12 +69,34 @@ public class GameManager : MonoBehaviour
         pointsText.text = score.points.ToString();
     }
 
-    public void GameLost()
+    public void GameOver()
     {
         // TODO: Do more things
         //  - Load a lose scene or enable lost UI
+        gameLost = true;
+        Destroy(player);
         SaveScore();
+
+        EnableGameOverUI();
+    }
+
+    public void ReloadScene()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void ResetScore()
+    {
+        score.bestPoints = 0;
+        score.points = 0;
+        bestPointsText.text = score.bestPoints.ToString();
+        pointsText.text = score.points.ToString();
+        SaveScore();
     }
 
     // -------
@@ -91,5 +119,10 @@ public class GameManager : MonoBehaviour
             score = (Score)bf.Deserialize(file);
             file.Close();
         }
+    }
+
+    private void EnableGameOverUI()
+    {
+        lostUI.SetActive(true);
     }
 }

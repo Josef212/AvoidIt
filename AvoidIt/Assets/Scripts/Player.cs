@@ -31,7 +31,8 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.RotateAround(Vector3.zero, Vector3.forward, -movement * movementSpeed * Time.fixedDeltaTime);
+        if(!gm.GameLost)
+            transform.RotateAround(Vector3.zero, Vector3.forward, -movement * movementSpeed * Time.fixedDeltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -39,7 +40,7 @@ public class Player : MonoBehaviour
         Debug.Log(collision.tag);
         if(collision.tag == "Obstacle")
         {
-            gm.GameLost();
+            gm.GameOver();
         }
     }
 }

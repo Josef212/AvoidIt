@@ -25,7 +25,7 @@ public class ObstacleShape : MonoBehaviour
         transform.localScale -= Vector3.one * shrinkSpeed * Time.deltaTime;
         if(transform.localScale.x <= 0.5)
         {
-            gm.AddPoints(points);
+            if(!gm.GameLost) gm.AddPoints(points);
             Destroy(gameObject);
         }
 	}
